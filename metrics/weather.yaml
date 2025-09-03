@@ -1,7 +1,7 @@
 type: metrics_view
 version: 1
 
-model: events
+model: noaa-weather
 timeseries: measurement_date
 smallest_time_grain: day
 

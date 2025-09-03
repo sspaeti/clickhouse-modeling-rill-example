@@ -3,8 +3,8 @@
 
 type: explore
 
-display_name: "Events dashboard"
-metrics_view: events
+display_name: "Weather dashboard"
+metrics_view: weather
 
 dimensions: '*'
 measures: '*'
