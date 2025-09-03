@@ -1,0 +1,63 @@
+type: model
+materialize: true
+incremental: true
+
+# Do an incremental refresh every hour.
+refresh:
+  cron: "0 * * * *"
+
+# Use SQL partitions to define year-based partitions for NOAA data
+# This demonstrates ClickHouse's S3 capabilities with yearly partitioning
+partitions:
+  sql: SELECT arrayJoin(['2019', '2020', '2021', '2022']) AS year
+
+# Load and transform NOAA weather data with proper column names and types
+# This showcases ClickHouse's data transformation capabilities
+sql: >
+  SELECT
+      '{{ .partition.year }}' AS __partition,
+      now() AS __load_time,
+      -- Transform raw CSV columns to proper NOAA weather schema
+      COALESCE(c1, 'UNKNOWN') AS station_id,
+      COALESCE(toDate(toString(c2)), toDate('1900-01-01')) AS measurement_date,
+      COALESCE(c3, 'UNKNOWN') AS measurement_type, -- TMIN, TMAX, PRCP, SNOW, etc.
+      toFloat32(c4) / 10.0 AS measurement_value, -- Convert from tenths
+      c5 AS measurement_flag,
+      c6 AS quality_flag,
+      c7 AS source_flag,
+      c8 AS observation_time,
+      -- Add derived fields for analytics
+      toYear(toDate(toString(c2))) AS measurement_year,
+      toMonth(toDate(toString(c2))) AS measurement_month,
+      toDayOfYear(toDate(toString(c2))) AS measurement_day_of_year,
+      -- Temperature conversions for common analysis
+      CASE 
+        WHEN c3 = 'TMIN' THEN toFloat32(c4) / 10.0
+        ELSE NULL 
+      END AS temp_min_celsius,
+      CASE 
+        WHEN c3 = 'TMAX' THEN toFloat32(c4) / 10.0  
+        ELSE NULL
+      END AS temp_max_celsius,
+      CASE 
+        WHEN c3 = 'PRCP' THEN toFloat32(c4) / 10.0
+        ELSE NULL
+      END AS precipitation_mm
+  FROM s3(
+      's3://noaa-ghcn-pds/csv.gz/{{ .partition.year }}.csv.gz',
+      'CSV'
+  )
+
+# Insert the results into a partitioned table that uses the MergeTree engine.
+# Optimized for time-series weather data analytics
+output:
+  incremental_strategy: partition_overwrite
+  partition_by: __partition
+  engine: MergeTree
+  # Optimize ordering for typical weather queries: by date, station, measurement type
+  # Using COALESCE ensures non-nullable columns in sorting key
+  order_by: (measurement_date, station_id, measurement_type)
+  # Primary key for fast weather station and date lookups
+  primary_key: (measurement_date, station_id)
+  # TTL for data retention (optional - uncomment if needed)
+  # ttl: measurement_date + INTERVAL 10 YEAR

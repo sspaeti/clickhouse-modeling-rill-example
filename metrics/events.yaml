@@ -1,0 +1,46 @@
+type: metrics_view
+version: 1
+
+model: events
+timeseries: measurement_date
+smallest_time_grain: day
+
+dimensions:
+  - name: station_id
+    display_name: Weather Station
+    column: station_id
+  - name: measurement_type
+    display_name: Measurement Type
+    column: measurement_type
+  - name: measurement_year
+    display_name: Year
+    column: measurement_year
+  - name: measurement_month
+    display_name: Month
+    column: measurement_month
+  - name: quality_flag
+    display_name: Quality Flag
+    column: quality_flag
+
+measures:
+  - name: record_count
+    display_name: Total Records
+    expression: count(*)
+  - name: avg_temperature_min
+    display_name: Average Min Temperature (°C)
+    expression: avg(temp_min_celsius)
+  - name: avg_temperature_max
+    display_name: Average Max Temperature (°C) 
+    expression: avg(temp_max_celsius)
+  - name: total_precipitation
+    display_name: Total Precipitation (mm)
+    expression: sum(precipitation_mm)
+  - name: avg_precipitation
+    display_name: Average Precipitation (mm)
+    expression: avg(precipitation_mm)
+  - name: station_count
+    display_name: Number of Stations
+    expression: countDistinct(station_id)
+  - name: measurement_value_avg
+    display_name: Average Measurement Value
+    expression: avg(measurement_value)

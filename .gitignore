@@ -1,0 +1,12 @@
+*/*.db
+*/*.db.wal
+*/data/*
+**/.DS_Store
+.idea
+*.iml
+
+.DS_Store
+
+# Rill
+.env
+tmp

@@ -1,0 +1,18 @@
+type: connector
+driver: clickhouse
+
+# In development, start ClickHouse as a subprocess
+dev:
+  # mode: readwrite is enabled by default when managed is true
+  managed: true
+
+# In production, connect to an external ClickHouse cluster
+prod:
+  host: example.com
+  port: 8123
+  database: default
+  username: {{ .env.clickhouse_username_prod }}
+  password: {{ .env.clickhouse_password_prod }}
+  ssl: false
+  # mode: readwrite to enable model creation and table mutations
+  mode: readwrite
