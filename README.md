@@ -9,8 +9,8 @@ This example demonstrates advanced data modeling strategies for real-time analyt
 > **This is a clone of https://github.com/rilldata/rill-examples** and added for Weather-demo data
 > please check the readme for how to install and setup with env variables
 
-
 ```sh
+curl https://rill.sh | sh
 rill start git@github.com:sspaeti/clickhouse-modeling-rill-example.git
 ```
 
