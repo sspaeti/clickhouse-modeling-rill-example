@@ -47,6 +47,7 @@ sql: >
       END AS precipitation_mm
   FROM s3(
       's3://noaa-ghcn-pds/csv.gz/by_year/{{ .partition.year }}.csv.gz',
+      'NOSIGN',
       'CSV'
   )
 
