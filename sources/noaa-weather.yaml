@@ -49,6 +49,7 @@ sql: >
       's3://noaa-ghcn-pds/csv.gz/{{ .partition.year }}.csv.gz',
       'CSV'
   )
+  LIMIT 10000
 
 # Insert the results into a partitioned table that uses the MergeTree engine.
 # Optimized for time-series weather data analytics

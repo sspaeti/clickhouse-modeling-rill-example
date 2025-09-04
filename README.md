@@ -11,9 +11,7 @@ This example demonstrates advanced data modeling strategies for real-time analyt
 
 
 ```sh
-git clone https://github.com/sspaeti/clickhouse-modeling-rill-example.git
-cd clickhouse-modeling-rill-example
-rill start
+rill start git@github.com:sspaeti/clickhouse-modeling-rill-example.git
 ```
 
 When loaded, you should see something like this in the logs (I added 2018-2022) - ignore the Warnings:
