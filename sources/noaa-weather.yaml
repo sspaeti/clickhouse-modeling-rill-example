@@ -9,7 +9,7 @@ refresh:
 # Use SQL partitions to define year-based partitions for NOAA data
 # This demonstrates ClickHouse's S3 capabilities with yearly partitioning
 partitions:
-  sql: SELECT generate_series AS year FROM generate_series(2021, 2022)
+  sql: SELECT generate_series AS year FROM generate_series(2022, 2022)
   #grabbing all files
   #glob: s3://noaa-ghcn-pds/csv.gz/*.csv.gz 
 
@@ -49,7 +49,6 @@ sql: >
       's3://noaa-ghcn-pds/csv.gz/{{ .partition.year }}.csv.gz',
       'CSV'
   )
-  LIMIT 10000
 
 # Insert the results into a partitioned table that uses the MergeTree engine.
 # Optimized for time-series weather data analytics
