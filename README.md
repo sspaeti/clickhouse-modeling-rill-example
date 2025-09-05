@@ -4,25 +4,15 @@ We use S3 source with ClickHouse as engine, and Rill for visualization.
 
 This example demonstrates advanced data modeling strategies for real-time analytics using ClickHouse and Rill. We showcase how to maximize ClickHouse's capabilities for data transformation while keeping Rill focused on visualization and last-mile analytics.
 
+> **Note**
+> This is a clone of [Rill Examples](https://github.com/rilldata/rill-examples) and added for Weather-demo data
+> please check the readme for how to install and setup with env variables
 
 ## Quick Installation
-> **This is a clone of https://github.com/rilldata/rill-examples** and added for Weather-demo data
-> please check the readme for how to install and setup with env variables
 
 ```sh
 curl https://rill.sh | sh
 rill start git@github.com:sspaeti/clickhouse-modeling-rill-example.git
-```
-
-When loaded, you should see something like this in the logs (I added 2018-2022) - ignore the Warnings:
-```
-2025-09-04T22:57:36.942 INFO    Executed model partition        {"model": "noaa-weather", "key": "3cc1db8b49bffec69d2ef7fb2bef1995", "data": {"year":"2022"}, "elapsed": "9.478183354s"}
-2025-09-04T22:57:36.958 WARN    ClickHouse embedded server      {"logger_name": "AwsAuthSTSAssumeRoleWebIdentityCredentialsProvider", "message": "Token file must be specified to use STS AssumeRole web identity creds provider."}
-2025-09-04T22:57:51.479 INFO    Executed model partition        {"model": "noaa-weather", "key": "78d8f4f54d34a0e03988b3839c7aa123", "data": {"year":"2020"}, "elapsed": "14.534176736s"}
-2025-09-04T22:57:51.498 WARN    ClickHouse embedded server      {"logger_name": "AwsAuthSTSAssumeRoleWebIdentityCredentialsProvider", "message": "Token file must be specified to use STS AssumeRole web identity creds provider."}
-2025-09-04T22:58:05.634 INFO    Executed model partition        {"model": "noaa-weather", "key": "f397e84231f6b455e0b158778e24836e", "data": {"year":"2019"}, "elapsed": "14.151739607s"}
-2025-09-04T22:58:05.650 WARN    ClickHouse embedded server      {"logger_name": "AwsAuthSTSAssumeRoleWebIdentityCredentialsProvider", "message": "Token file must be specified to use STS AssumeRole web identity creds provider."}
-2025-09-04T22:58:21.053 INFO    Executed model partition        {"model": "noaa-weather", "key": "fb848cc8c72c1419bec5b4853846226e", "data": {"year":"2018"}, "elapsed": "15.415974665s"}
 ```
 
 ### Contains
