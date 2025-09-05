@@ -261,10 +261,15 @@ measures:
 
 ### 1. Remote Data Access
 ```sql
-FROM s3('s3://noaa-ghcn-pds/csv.gz/{{ .partition.year }}.csv.gz', 'CSV')
+FROM s3(
+    's3://noaa-ghcn-pds/csv.gz/by_year/{{ .partition.year }}.csv.gz',
+    'NOSIGN',
+    'CSV'
+)
 ```
 - Direct S3 access without data copying
 - Automatic CSV parsing and compression handling
+- Uses organized `by_year/` directory structure for better data management
 
 ### 2. Template Variables
 ```sql  
