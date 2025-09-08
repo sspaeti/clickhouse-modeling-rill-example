@@ -17,7 +17,6 @@ partitions:
 # This showcases ClickHouse's data transformation capabilities
 sql: >
   SELECT
-      '{{ .partition.year }}' AS __partition,
       now() AS __load_time,
       -- Transform raw CSV columns to proper NOAA weather schema
       COALESCE(c1, 'UNKNOWN') AS station_id,
@@ -51,12 +50,10 @@ sql: >
       'CSV'
   )
 
-# Insert the results into a partitioned table that uses the MergeTree engine.
+# Configure the output Clickhouse table.
+# The table by default uses the MergeTree engine and is partitioned by the input partitions.
 # Optimized for time-series weather data analytics
 output:
-  incremental_strategy: partition_overwrite
-  partition_by: __partition
-  engine: MergeTree
   # Optimize ordering for typical weather queries: by date, station, measurement type
   # Using COALESCE ensures non-nullable columns in sorting key
   order_by: (measurement_date, station_id, measurement_type)
